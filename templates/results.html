@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Interview Results</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    /* Hide rows beyond 10 initially */
+    .hidden-row {
+      display: none;
+    }
+  </style>
+</head>
+<body style="padding: 20px; font-family: sans-serif;">
+<div class="header">
+    <h2>🧠 Emotion Logs and Interview Answers</h2>
+    <p style="font-weight: 400; font-size: 1rem;">User: {{ session['username'] }}</p>
+  </div>
+  <h2>Emotion Logs</h2>
+  <table border="1" cellpadding="10" id="emotion-table">
+    <tr><th>Timestamp</th><th>Emotion</th></tr>
+    {% for e in emotions %}
+      <tr class="{% if loop.index > 10 %}hidden-row{% endif %}">
+        <td>{{ e.timestamp }}</td>
+        <td>{{ e.emotion }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+
+  <button id="toggle-emotion" style="margin-top: 10px;">View More</button>
+
+  <h2 style="margin-top: 40px;">Interview Answers</h2>
+  <table border="1" cellpadding="10">
+    <tr><th>Question</th><th>Answer</th></tr>
+    {% for a in answers %}
+      <tr>
+        <td>{{ a.question }}</td>
+        <td>{{ a.answer }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+
+  <form action="/generate-report" method="post" style="margin-top: 1rem;">
+    <button type="submit">📄 Generate Soft Skill Report</button>
+  </form>
+  
+  <form action="/dashboard" method="GET" style="margin-top: 2rem;">
+    <button type="submit" class="secondary">🏠 Back to Home</button>
+  </form>
+
+  
+
+  <script>
+    const toggleBtn = document.getElementById('toggle-emotion');
+    const rows = document.querySelectorAll('#emotion-table tr.hidden-row');
+
+    toggleBtn.addEventListener('click', () => {
+      const isHidden = rows[0].style.display === 'none' || rows[0].style.display === '';
+      rows.forEach(row => {
+        row.style.display = isHidden ? 'table-row' : 'none';
+      });
+      toggleBtn.textContent = isHidden ? 'Read Less' : 'Read More';
+    });
+
+    // Ensure rows beyond 10 are hidden on page load
+    rows.forEach(row => row.style.display = 'none');
+  </script>
+
+</body>
+</html>

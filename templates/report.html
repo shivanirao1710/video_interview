@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Soft Skill Report</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <div class="header">
+    <h2>🧠 Soft Skill Analysis Report</h2>
+    <p style="font-weight: 400; font-size: 1rem;">User: {{ session['username'] }}</p>
+  </div>
+
+  <div class="report-container">
+    {% if report %}
+      {% for item in report %}
+        <div class="report-card">
+          <p><strong>🗨️ Question:</strong></p>
+          <p class="question">{{ item.question }}</p>
+
+          <p><strong>🎤 Answer:</strong></p>
+          <p class="answer">{{ item.answer }}</p>
+
+          <p><strong>📈 Analysis:</strong></p>
+          <p class="analysis">{{ item.analysis }}</p>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No report data available.</p>
+    {% endif %}
+
+    <a href="/dashboard"><button>🏠 Back to Home</button></a>
+  </div>
+
+</body>
+</html>

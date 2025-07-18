@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .dashboard-container {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      text-align: center;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    form, a {
+      display: inline-block;
+    }
+
+    .logout-form {
+      text-align: center;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Header -->
+  <div class="header">
+    <h2>Hi {{ username }}, welcome to interview</h2>
+  </div>
+
+  <!-- ✅ Dashboard Container -->
+  <div class="dashboard-container">
+    <!-- 🎤 Interview Button -->
+    <form action="/start-interview" method="POST">
+      <button type="submit">🎤 Take Interview</button>
+    </form>
+
+    <!-- 📊 Results + Report Buttons -->
+    <div class="button-group">
+      <form action="/results" method="GET">
+        <button type="submit">📊 View Results</button>
+      </form>
+
+      <a href="/view-report">
+        <button type="button">📋 View Soft Skill Report</button>
+      </a>
+    </div>
+  </div>
+
+  <!-- 🚪 Logout Button -->
+  <div class="logout-form">
+    <form action="/logout" method="GET">
+      <button type="submit" class="secondary">🚪 Logout</button>
+    </form>
+  </div>
+
+</body>
+</html>

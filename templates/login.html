@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="header"><h2>Truefit Careers</h2></div>
+  <div class="container">
+    <h2>Login</h2>
+    <form method="POST" action="/login">
+      <input type="text" name="username" placeholder="Enter Username" required>
+      <input type="password" name="password" placeholder="Enter Password" required>
+      <button type="submit">Login</button>
+    </form>
+<br>
+    <!-- ✅ Register Button -->
+    <p>Don't have an account? <a href="/register">Register</a></p>
+  </div>
+</body>
+</html>
+
