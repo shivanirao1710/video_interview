@@ -70,7 +70,6 @@ def dashboard():
 # -------------------------
 # Start Interview (Run Python Script)
 # -------------------------
-import subprocess
 
 @app.route('/start-interview', methods=['POST'])
 def start_interview():
