@@ -1,24 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Interview</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
-        .question-block { background: white; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
-        textarea { width: 100%; height: 80px; margin-top: 8px; }
-        button { margin-top: 20px; padding: 10px 20px; font-size: 16px; }
-    </style>
+  <title>Interview</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h2>Answer the Questions Below</h2>
+  <div class="header"><h2>Answer the Questions Below</h2></div>
+
+  <div class="container">
     <form action="/submit-interview" method="POST">
-        {% for q in questions %}
-            <div class="question-block">
-                <p><b>Q{{ loop.index }}: {{ q[1] }}</b></p>
-                <textarea name="question_{{ q[0] }}" required></textarea>
-            </div>
-        {% endfor %}
-        <button type="submit">Submit Answers</button>
+      {% for q in questions %}
+        <div class="question-block">
+          <p><b>Q{{ loop.index }}: {{ q[1] }}</b></p>
+          <textarea name="question_{{ q[0] }}" required></textarea>
+        </div>
+      {% endfor %}
+      <button type="submit">Submit Answers</button>
     </form>
+  </div>
 </body>
 </html>

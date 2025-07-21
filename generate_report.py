@@ -40,7 +40,7 @@ try:
     ) as conn:
         with conn.cursor() as cur:
 
-            # ✅ Fetch user's interview answers
+            # Fetch user's interview answers
             cur.execute("SELECT question, answer FROM interview_answers WHERE username = %s", (USERNAME,))
             rows = cur.fetchall()
 
@@ -48,13 +48,11 @@ try:
                 logging.warning("No interview answers found.")
                 exit()
 
-            # ✅ Delete previous report
+            # Delete previous report
             cur.execute("DELETE FROM soft_skill_analysis WHERE username = %s", (USERNAME,))
             logging.info("Old soft skill analysis deleted.")
 
-            # ✅ Analyze and store
-            report_lines = []
-
+            # Analyze and store in database only
             for question, answer in tqdm(rows, desc="Analyzing answers"):
                 if not answer.strip():
                     continue
@@ -80,15 +78,8 @@ try:
                     VALUES (%s, %s, %s, %s)
                 """, (USERNAME, question.strip(), answer.strip(), result.strip()))
 
-                report_lines.append(f"Q: {question}\nA: {answer}\nAnalysis: {result}\n\n")
-
             conn.commit()
-
-            # ✅ Optional: Save to local text file
-            with open(f"{USERNAME}_soft_skill_report.txt", "w", encoding="utf-8") as f:
-                f.writelines(report_lines)
-
-            logging.info("✅ Report generation complete.")
+            logging.info("✅ Report generation complete. Data stored in database.")
 
 except Exception as e:
     logging.error(f"Database or processing error: {e}")
