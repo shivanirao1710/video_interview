@@ -4,6 +4,7 @@ import psycopg2
 import subprocess
 import os
 import signal
+import time
 app = Flask(__name__)
 app.secret_key = 'secret123'
 
@@ -101,9 +102,8 @@ def submit_interview():
     username = session['username']
     cur = conn.cursor()
 
-    # 🧹 Delete old answers
+    # Save answers
     cur.execute("DELETE FROM interview_answers WHERE username = %s", (username,))
-
     for key, value in request.form.items():
         if key.startswith("question_"):
             question_id = key.split("_")[1]
@@ -111,20 +111,20 @@ def submit_interview():
                 INSERT INTO interview_answers (question, answer, username)
                 SELECT question, %s, %s FROM interview_questions WHERE id = %s
             """, (value, username, question_id))
-
     conn.commit()
-    cur.close()
 
-    # ❌ Kill live_interview.py if running
+    # Final save of emotions and terminate process
     pid = session.get('interview_pid')
     if pid:
         try:
+            # Send termination signal
             os.kill(pid, signal.SIGTERM)
-            print(f"🛑 Killed live_interview.py process with PID {pid}")
+            print(f"🛑 Sent termination signal to process {pid}")
+            # Wait briefly to ensure save completes
+            time.sleep(1)
         except Exception as e:
-            print(f"⚠️ Failed to kill process: {e}")
+            print(f"⚠️ Failed to terminate process: {e}")
 
-    # ✅ Go to results
     return redirect('/results')
 
 # -------------------------
